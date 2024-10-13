@@ -16,8 +16,8 @@ logging:
         jdbc: DEBUG
 
 demo:
-  id: 1
-  message: hello from dev
+  id: 2
+  message: hello from prod
 
 management:
   endpoints:

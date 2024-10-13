@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.DemoProperties;
 import com.example.demo.model.Book;
 import com.example.demo.repository.DemoRepository;
 import jakarta.validation.constraints.NotBlank;
@@ -8,15 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
 public class DemoController {
     private final DemoRepository demoRepository;
+    private final DemoProperties demoProperties;
 
-    public DemoController(DemoRepository demoRepository) {
+    public DemoController(DemoRepository demoRepository, DemoProperties demoProperties) {
         this.demoRepository = demoRepository;
+        this.demoProperties = demoProperties;
     }
 
     @GetMapping("/books")
@@ -52,5 +54,10 @@ public class DemoController {
     private Book deleteBook(@PathVariable Integer id) {
         return demoRepository.deleteBook(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/properties")
+    private DemoProperties getProperties() {
+        return demoProperties;
     }
 }
