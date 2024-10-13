@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
@@ -20,24 +21,25 @@ public class DemoController {
 
     @GetMapping("/books")
     private List<Book> getBooks() {
-        return demoRepository.getBooks();
+        return demoRepository.findAll();
     }
 
     @GetMapping("/books/id/{id}")
     private Book getBookById(@PathVariable Integer id) {
-        return demoRepository.getBookById(id)
+        return demoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/books/title/{title}")
-    private Book getBookByTitle(@PathVariable String title) {
-        return demoRepository.getBookByTitle(title)
+    private List<Book> getBooksByTitle(@PathVariable String title) {
+        return demoRepository.findByTitle(title)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/books")
     private Book postBook(@RequestParam @NotBlank String title) {
-        return demoRepository.postBook(title);
+        return demoRepository.postBook(title)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/books/{id}")
